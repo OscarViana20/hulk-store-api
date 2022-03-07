@@ -13,13 +13,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.oviana.hulkstore.entity.ProductEntity;
 import com.oviana.hulkstore.entity.PurchaseDetailEntity;
 import com.oviana.hulkstore.entity.PurchaseOrderEntity;
+import com.oviana.hulkstore.entity.UserEntity;
 import com.oviana.hulkstore.exception.HulkStoreException;
+import com.oviana.hulkstore.repository.ILoginRepository;
 import com.oviana.hulkstore.repository.IPersonRepository;
 import com.oviana.hulkstore.repository.IProductRepository;
 import com.oviana.hulkstore.repository.IPurchaseDetailRepository;
 import com.oviana.hulkstore.repository.IPurchaseOrderRepository;
 import com.oviana.hulkstore.service.IPurchaseOrderService;
 import com.oviana.hulkstore.vo.request.PurchaseOrderRequestVO;
+import com.oviana.hulkstore.vo.response.PurchaseDetailResponseVO;
+import com.oviana.hulkstore.vo.response.PurchaseReportResponseVO;
 
 /**
  * The Class PurchaseOrderService.
@@ -40,6 +44,9 @@ public class PurchaseOrderService implements IPurchaseOrderService {
 	@Autowired
 	private IPersonRepository personRepository;
 
+	@Autowired
+	private ILoginRepository loginRepository;
+
 	@Override
 	public void createPurchaseOrder(PurchaseOrderRequestVO purchaseOrderRequestVO) {
 		try {
@@ -54,6 +61,38 @@ public class PurchaseOrderService implements IPurchaseOrderService {
 			throw e;
 		} catch (Exception e) {
 			throw new HulkStoreException("Error in createPurchaseOrder");
+		}
+	}
+
+	@Override
+	public Collection<PurchaseReportResponseVO> findAllPurchaseOrder(String userName) {
+		try {
+
+			UserEntity userEntity = this.loginRepository.findUserByUserName(userName);
+
+			if (userEntity == null) {
+				throw new HulkStoreException(String.format("User not exists '%s'.", userName));
+			}
+
+			return this.purchaseOrderRepository.findAllPurchaseOrderByPersonId(userEntity.getPersonId());
+
+		} catch (HulkStoreException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new HulkStoreException("Error in findAllPurchaseOrder");
+		}
+	}
+
+	@Override
+	public Collection<PurchaseDetailResponseVO> findDetailPurchaseOrder(Integer purchaseId) {
+		try {
+
+			return this.purchaseDetailRepository.findDetailPurchaseOrder(purchaseId);
+
+		} catch (HulkStoreException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new HulkStoreException("Error in findDetailPurchaseOrder");
 		}
 	}
 

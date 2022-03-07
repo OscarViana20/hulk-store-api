@@ -3,6 +3,7 @@ package com.oviana.hulkstore.repository;
 import java.util.Collection;
 
 import com.oviana.hulkstore.entity.PurchaseDetailEntity;
+import com.oviana.hulkstore.vo.response.PurchaseDetailResponseVO;
 
 /**
  * The Interface IPurchaseDetailRepository.
@@ -29,4 +30,12 @@ public interface IPurchaseDetailRepository {
 	 * @return the collection
 	 */
 	Collection<PurchaseDetailEntity> findPurchaseDetailByUser(String userName);
+
+	/**
+	 * Find detail purchase order.
+	 *
+	 * @param purchaseId the purchase id
+	 * @return the collection
+	 */
+	Collection<PurchaseDetailResponseVO> findDetailPurchaseOrder(Integer purchaseId);
 }

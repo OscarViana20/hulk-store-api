@@ -1,6 +1,9 @@
 package com.oviana.hulkstore.repository;
 
+import java.util.Collection;
+
 import com.oviana.hulkstore.entity.PurchaseOrderEntity;
+import com.oviana.hulkstore.vo.response.PurchaseReportResponseVO;
 
 /**
  * The Interface IPurchaseOrderRepository.
@@ -18,4 +21,12 @@ public interface IPurchaseOrderRepository {
 	 * @return the purchase order entity
 	 */
 	PurchaseOrderEntity createPurchaseOrder(PurchaseOrderEntity purchaseOrder);
+
+	/**
+	 * Find all purchase order.
+	 *
+	 * @param personId the person id
+	 * @return the collection
+	 */
+	Collection<PurchaseReportResponseVO> findAllPurchaseOrderByPersonId(Integer personId);
 }
